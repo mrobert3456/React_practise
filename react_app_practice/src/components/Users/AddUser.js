@@ -1,24 +1,36 @@
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 import Card from "../UI/Card";
 import classes from "./AddUsers.module.css";
 import Button from "../UI/Button";
 import ErrorModal from "../UI/ErrorModal";
 import Wrapper from "../Helpers/Wrapper";
 const AddUser = (props) => {
-  const [enteredUsername, setEnteredusername] = useState("");
-  const [enteredAge, setEnteredage] = useState("");
+
+  //refs can connect javascript to html element
+  //no longer need useState to updated state
+  //if we access values with ref, then we talk about uncontrolled components
+        //because its internal state is not controlled by react
+        //useState approach is a controlled component approach
+  //so the states will not be updated in every keystroke, but only when we submit the form
+  //it is an object, which has a 'current' prop, that holds the actual value, that ref is connected with 
+  const nameInputRef= useRef();
+  const ageInputRef= useRef();
+
   const [error, setError] = useState();
   const addUserHandler = (event) => {
     event.preventDefault();
-
-    if (enteredUsername.trim().length === 0 || enteredAge.trim().length === 0) {
+   // console.log(nameInputRef.current.value);
+   const enteredName = nameInputRef.current.value;
+   const eneteredUserAge=ageInputRef.current.value;
+   //validation check
+    if (enteredName.trim().length === 0 || eneteredUserAge.trim().length === 0) {
       setError({
         title: "Invalid input",
         message: "Please enter a valid name and age (non-empty values)",
       });
       return;
     }
-    if (+enteredAge < 1) {
+    if (+eneteredUserAge < 1) {
       //+ sign means number conversion
       setError({
         title: "Invalid age",
@@ -26,16 +38,11 @@ const AddUser = (props) => {
       });
       return;
     }
-    props.onAddUser(enteredUsername, enteredAge);
-    setEnteredage("");
-    setEnteredusername("");
-  };
+    props.onAddUser(enteredName, eneteredUserAge);
 
-  const usernameChangeHandler = (event) => {
-    setEnteredusername(event.target.value);
-  };
-  const ageChangeHandler = (event) => {
-    setEnteredage(event.target.value);
+    //rarely use refs to manipulate the DOM
+    nameInputRef.current.value='';
+    ageInputRef.current.value='';
   };
   const errorHandler = () => {
     setError(null);
@@ -49,16 +56,14 @@ const AddUser = (props) => {
           <input
             id="username"
             type="text"
-            value={enteredUsername}
-            onChange={usernameChangeHandler}
+            ref={nameInputRef} //it will be a real DOM element later
           ></input>
 
           <label htmlFor="age">Age</label>
           <input
             id="age"
             type="number"
-            value={enteredAge}
-            onChange={ageChangeHandler}
+            ref={ageInputRef}
           ></input>
           <Button type="submit">Add User</Button>
         </form>
