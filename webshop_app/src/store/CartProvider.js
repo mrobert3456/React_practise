@@ -7,11 +7,33 @@ const defaultCartState = {
 };
 const cartReducer = (state, action) => {
   if (action.type === "ADD") {
-    const updatedItems = state.items.concat(action.item); //concat returns a new array
-    //which is important, because we want to update the state in an immutable way
-    //so we will create a new state object
     const updatedTotalAmount =
       state.totalAmount + action.item.price * action.item.amount;
+
+    const existingCartItemIndex = state.items.findIndex(
+      //returns an index if the item with the given id exists
+      (item) => item.id === action.item.id
+    );
+
+    const existingCartItem = state.items[existingCartItemIndex];
+
+    let updatedItems;
+
+    if (existingCartItem) {
+      const updatedItem = {
+        ...existingCartItem,
+        amount: existingCartItem.amount + action.item.amount,
+      };
+
+      updatedItems = [...state.items];
+      updatedItems[existingCartItemIndex] = updatedItem;
+    } else {
+      updatedItems = state.items.concat(action.item);
+      //concat returns a new array
+      //which is important, because we want to update the state in an immutable way
+      //so we will create a new state object
+    }
+
     return {
       items: updatedItems,
       totalAmount: updatedTotalAmount,
