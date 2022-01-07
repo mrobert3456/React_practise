@@ -19,7 +19,7 @@ const HeaderCartButton = (props) => {
     btnIsHighlighted ? classes.bump : ""
   }`;
   useEffect(() => {
-    if (cartCtx.items.length === 0) { //if there is no item in the cart
+    if (items.length === 0) { //if there is no item in the cart
       return;
     }
     setBtnIsHighlighted(true);
