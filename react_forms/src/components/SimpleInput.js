@@ -14,7 +14,12 @@ const SimpleInput = (props) => {
   }, [enteredNameIsValid]);
 
   const nameInputChangeHandler = (event) => {
-    setEnteredName(event.targer.value);
+    setEnteredName(event.target.value);
+
+    //Validation
+    if (event.target.value.trim() !== "") {
+      setEnteredNameIsValid(true);
+    }
   };
 
   const formSubmissionHandler = (event) => {
@@ -36,6 +41,17 @@ const SimpleInput = (props) => {
     setEnteredName("");
   };
 
+  const nameInputBlurHandler=()=>{
+    setEnteredNameTouched(true);
+
+    //Validation
+    if (enteredName.trim() === "") {
+      setEnteredNameIsValid(false);
+    }
+
+  };
+
+
   const nameInputIsInvalid =!enteredNameIsValid && enteredNameTouched;
 
   const nameInputClasses = nameInputIsInvalid
@@ -50,6 +66,7 @@ const SimpleInput = (props) => {
           type="text"
           id="name"
           onChange={nameInputChangeHandler}
+          onBlur={nameInputBlurHandler}
           value={enteredName}
         />
         {nameInputIsInvalid && (
