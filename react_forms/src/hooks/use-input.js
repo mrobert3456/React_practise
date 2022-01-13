@@ -20,7 +20,7 @@ import { useState } from "react";
 
   return {
     value: enteredValue,
-    IsValid:valueIsValid,
+    isValid:valueIsValid,
     hasError: hasError,
     valueChangeHandler,
     inputBlurHandler,

@@ -1,18 +1,27 @@
-import { useEffect, useState } from "react";
 
+import useInput from "../hooks/use-input";
 const SimpleInput = (props) => {
   // const nameInputRef = useRef();
   // const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
-  const [enteredName, setEnteredName] = useState("");
-  const [enteredNameTouched, setEnteredNameTouched] = useState(false);
-  const enteredNameIsValid = enteredName.trim() !== "";
-  const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;
 
-  const [enteredEmail, setEnteredEmail ] =useState("");
-  const [enteredEmailTouched, setEnteredEmailTouched] =useState(false);
+  const {
+    value: enteredName,
+    isValid: enteredNameIsValid,
+    hasError: nameInputHasError,
+    valueChangeHandler: nameChangeHandler,
+    inputBlurHandler: nameBlurHandler,
+    reset:resetNameInput
+  } = useInput((value) => value.trim() !== "");
 
-  const enteredEmailIsValid = enteredEmail.includes('@') && enteredEmail.length>1;
-  const emailInputIsInvalid = !enteredEmailIsValid && enteredEmailTouched;
+  const {
+    value: enteredEmail,
+    isValid: enteredEmailIsValid,
+    hasError: emailInputHasError,
+    valueChangeHandler: emailChangeHandler,
+    inputBlurHandler: emailBlurHandler,
+    reset:resetEmailInput
+  } = useInput((value) =>  value.includes("@"));
+
 
   let formIsValid = false;
 
@@ -20,78 +29,54 @@ const SimpleInput = (props) => {
     formIsValid = true;
   }
 
-  const emailInputChangeHandler =(event) =>{
-    setEnteredEmail(event.target.value);
-  };
-
-  const nameInputChangeHandler = (event) => {
-    setEnteredName(event.target.value);
-  };
-
   const formSubmissionHandler = (event) => {
     event.prevenDefault(); // avoid sending http request to a server
-    setEnteredNameTouched(true);
     //Validation
     if (!enteredNameIsValid || !enteredEmailIsValid) {
       //setEnteredNameIsValid(false);
       return;
     }
-
-    //setEnteredNameIsValid(true);
-
     console.log(enteredName);
-    //const enteredValue = nameInputRef.current.value;
-    //console.log(enteredValue);
-    //nameInputRef.current.value=''; //it works also, but not elegant, it is better to use States then Refs in this case
-    //we directly manipulating the DOM ,so that is why is not ideal
-    setEnteredName("");
-    setEnteredNameTouched(false);
-    setEnteredEmail("");
-    setEnteredEmailTouched(false);
+    resetNameInput();
+    resetEmailInput();
   };
 
-  const nameInputBlurHandler = () => {
-    setEnteredNameTouched(true);
-  };
-
-  const emailInputBlurHandler =()=>{
-    setEnteredEmailTouched(true);
-  };
-
-  const nameInputClasses = nameInputIsInvalid
+  const nameInputClasses = nameInputHasError
     ? "form-control invalid"
     : "form-control";
 
-    const emailInputClasses = emailInputIsInvalid
+  const emailInputClasses = emailInputHasError
     ? "form-control invalid"
     : "form-control";
   return (
-    <form>
+    <form onSubmit={formSubmissionHandler}>
       <div className={nameInputClasses}>
         <label htmlFor="name">Your Name</label>
         <input
           // ref={nameInputRef}
           type="text"
           id="name"
-          onChange={nameInputChangeHandler}
-          onBlur={nameInputBlurHandler}
+          onChange={nameChangeHandler}
+          onBlur={nameBlurHandler}
           value={enteredName}
         />
-        {nameInputIsInvalid && (
+        {nameInputHasError && (
           <p className="error-text">Name must be not empty.</p>
         )}
       </div>
       <div className={emailInputClasses}>
         <label htmlFor="email">Your e-mail address</label>
         <input
-          type="text"
+          type="email"
           id="email"
-          onChange={emailInputChangeHandler}
-          onBlur={emailInputBlurHandler}
+          onChange={emailChangeHandler}
+          onBlur={emailBlurHandler}
           value={enteredEmail}
         />
-        {emailInputIsInvalid && (
-          <p className="error-text">Email must be not empty, and must contain '@'.</p>
+        {emailInputHasError && (
+          <p className="error-text">
+            Email must be not empty, and must contain '@'.
+          </p>
         )}
       </div>
       <div className="form-actions">
