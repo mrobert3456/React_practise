@@ -50,6 +50,13 @@ const Checkout = (props) => {
     }
 
     //submit the cart data
+
+    props.onConfirm({
+        name:enteredName,
+        street : enteredStreet,
+        city: enteredCity,
+        postal: enteredPostal
+    });
   };
 
   return (
