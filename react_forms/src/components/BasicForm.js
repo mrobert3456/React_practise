@@ -90,7 +90,7 @@ const BasicForm = (props) => {
         {emailHasError&& <p className="error-text">Please enter a valid email.</p>}
       </div>
       <div className="form-actions">
-        <button disabled={formIsValid}>Submit</button>
+        <button disabled={!formIsValid}>Submit</button>
       </div>
     </form>
   );
