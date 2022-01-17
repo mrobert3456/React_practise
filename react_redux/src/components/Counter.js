@@ -8,6 +8,8 @@ const Counter = () => {
   // and it also subscribe to the store automatically, so this component will recieve the latest state
   //whenever the store changes
 
+  const show = useSelector((state) => state.showCounter);
+
   const incrementHandler = () => {
     dispatch({ type: "increment" });
   };
@@ -19,12 +21,14 @@ const Counter = () => {
     dispatch({ type: "increase", amount: 5 });
   };
 
-  const toggleCounterHandler = () => {};
+  const toggleCounterHandler = () => {
+    dispatch({ type: "toggle" });
+  };
 
   return (
     <main className={classes.counter}>
       <h1>Redux Counter</h1>
-      <div className={classes.value}>{counter}</div>
+      {show && <div className={classes.value}>{counter}</div>}
       <div>
         <button onClick={incrementHandler}>Increment</button>
         <button onClick={increaseHandler}>Increase by 5</button>
@@ -35,7 +39,6 @@ const Counter = () => {
   );
 };
 export default Counter;
-
 
 class CounterC extends Component {
   incrementHandler() {
@@ -74,10 +77,6 @@ const mapDispatchToProps = (dispatch) => {
     decrement: () => dispatch({ type: "decrement" }),
   };
 };
-
-
-
-
 
 //export default connect(mapStateToProps,mapDispatchToProps)(CounterC);
 //connect () returns a new function to which we pass Counter as a parameter
