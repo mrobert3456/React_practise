@@ -5,10 +5,7 @@ import HighlightedQuote from "../components/quotes/HighlightedQuote";
 import useHttp from "../hooks/use-http";
 import { getSingleQuote } from "../lib/api";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
-const DUMMY_QUOTES = [
-  { id: "q1", author: "Robi", text: "Learning is fun" },
-  { id: "q2", author: "Norbi", text: "Random text" },
-];
+
 
 const QuoteDetail = () => {
   const match = useRouteMatch();
