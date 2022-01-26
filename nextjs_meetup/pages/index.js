@@ -1,32 +1,26 @@
 import { useEffect, useState } from "react";
 import MeetupList from "../components/meetups/MeetupList";
 import { MongoClient } from "mongodb";
-const DUMMY_MEETUPS = [
-  {
-    id: "m1",
-    title: "First meetup",
-    image:
-      "https://upload.wikimedia.org/wikipedia/commons/6/6b/ThePantheon.jpg",
-    address: "Some Address 5, 12345 Some city",
-    description: "This is a the first meetup",
-  },
-
-  {
-    id: "m2",
-    title: "Second meetup",
-    image:
-      "https://upload.wikimedia.org/wikipedia/commons/6/6b/ThePantheon.jpg",
-    address: "Some Address 5, 12345 Some city",
-    description: "This is  the second meetup",
-  },
-];
+import Head from "next/head";
+import { Fragment } from "react/cjs/react.production.min";
 function HomePage(props) {
   //   const [loadedMeetups, setLoadedMeetups] = useState([]);
   //   useEffect(() => {
   //     //fetching datas
   //     setLoadedMeetups(DUMMY_MEETUPS);
   //   }, []);
-  return <MeetupList meetups={props.meetups} />;
+  return (
+    <Fragment>
+      <Head>
+        <title>React meetups</title>
+        <meta
+          name="description"
+          content="Browse a huge list og highly active react meetups!"
+        />
+      </Head>
+      <MeetupList meetups={props.meetups} />;
+    </Fragment>
+  );
 }
 export async function getStaticProps() {
   //this code is not exposed to the client
@@ -49,11 +43,11 @@ export async function getStaticProps() {
   client.close();
   return {
     props: {
-      meetups: meetups.map(meetup=>({
-          title: meetup.title,
-          address: meetup.address,
-          image: meetup.image,
-          id: meetup._id.toString()
+      meetups: meetups.map((meetup) => ({
+        title: meetup.title,
+        address: meetup.address,
+        image: meetup.image,
+        id: meetup._id.toString(),
       })),
     },
     revalidate: 10, //incremental static generation
