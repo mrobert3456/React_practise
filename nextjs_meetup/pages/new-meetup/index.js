@@ -28,7 +28,7 @@ function NewMeetupPage() {
           content="Add your own meetup!"
         />
       </Head>
-       <NewMeetupForm onAddMeetup={addMeetupHandler} />;
+       <NewMeetupForm onAddMeetup={addMeetupHandler} />
   </Fragment>
 }
 

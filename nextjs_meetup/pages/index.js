@@ -50,7 +50,7 @@ export async function getStaticProps() {
         id: meetup._id.toString(),
       })),
     },
-    revalidate: 10, //incremental static generation
+    revalidate: 1, //incremental static generation
     //this would be regenerated on the server at least every 10 esconds, if there are requests coming in
     // the data is never older then 10 seconds
     //so you dont have to rebuild and redeploy the entire app ,when some date changed
