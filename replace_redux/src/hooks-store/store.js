@@ -12,9 +12,9 @@ export const useStore = () => {
     const newState = actions[actionIdentifier](globalState,payload);
     globalState = { ...globalState, ...newState };
 
-    for (const listner of listeners) {
+    for (const listener of listeners) {
       //updates the states of the subscribed components
-      listeners(globalState);
+      listener(globalState);
     }
   };
 
